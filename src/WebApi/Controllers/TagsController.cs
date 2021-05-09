@@ -14,14 +14,14 @@ namespace AsukaApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] Create.Command command, CancellationToken cancellationToken)
         {
             var response = await Mediator.Send(command, cancellationToken);
             return NoContent();
         }
 
-        [HttpPut("[action]")]
+        [HttpPut]
         public async Task<IActionResult> EditAsync([FromBody] Edit.Command command, CancellationToken cancellationToken)
         {
             var response = await Mediator.Send(command, cancellationToken);
