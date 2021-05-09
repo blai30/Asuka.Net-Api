@@ -3,8 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E08F935-AC7A-484C-84C5-71A4F4305C8D}"
 ProjectSection(SolutionItems) = preProject
 	.dockerignore = .dockerignore
-				.editorconfig = .editorconfig
-				.env = .env
+	.editorconfig = .editorconfig
+	.env = .env
 	.gitignore = .gitignore
 	flyway.conf = flyway.conf
 	README.md = README.md
