@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using AsukaApi.Infrastructure.Persistence;
 using MediatR;
@@ -23,10 +25,15 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
             {
                 await using var context = _factory.CreateDbContext();
 
-                var reactionRole = await context.ReactionRoles
+                var entity = await context.ReactionRoles
                     .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
-                context.ReactionRoles.Remove(reactionRole);
+                if (entity is null)
+                {
+                    throw new HttpRequestException("Entity not found", null, HttpStatusCode.NotFound);
+                }
+
+                context.ReactionRoles.Remove(entity);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

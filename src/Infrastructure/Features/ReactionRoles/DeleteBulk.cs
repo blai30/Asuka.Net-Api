@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,11 +7,11 @@ using AsukaApi.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace AsukaApi.Infrastructure.Features.Tags
+namespace AsukaApi.Infrastructure.Features.ReactionRoles
 {
-    public class Delete
+    public class DeleteBulk
     {
-        public sealed record Command(int Id) : IRequest;
+        public sealed record Command(ulong? MessageId, ulong? RoleId) : IRequest;
 
         public sealed class CommandHandler : IRequestHandler<Command>
         {
@@ -21,19 +22,24 @@ namespace AsukaApi.Infrastructure.Features.Tags
                 _factory = factory;
             }
 
+
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 await using var context = _factory.CreateDbContext();
 
-                var entity = await context.Tags
-                    .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+                var entities = await context.ReactionRoles
+                    .AsNoTracking()
+                    .Where(entity =>
+                        entity.MessageId == request.MessageId &&
+                        entity.RoleId == request.RoleId)
+                    .ToListAsync(cancellationToken);
 
-                if (entity is null)
+                if (entities is null || entities.Count <= 0)
                 {
-                    throw new HttpRequestException("Entity not found", null, HttpStatusCode.NotFound);
+                    throw new HttpRequestException("Entities not found", null, HttpStatusCode.NotFound);
                 }
 
-                context.Tags.Remove(entity);
+                context.ReactionRoles.RemoveRange(entities);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

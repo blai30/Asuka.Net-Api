@@ -11,7 +11,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
 {
     public class Get
     {
-        public sealed record Query(ulong? GuildId, ulong? ChannelId, ulong? MessageId, ulong? RoleId, string? Reaction) : IRequest<IEnumerable<ReactionRole>>;
+        public sealed record Query(int? Id, ulong? GuildId, ulong? ChannelId, ulong? MessageId, ulong? RoleId, string? Reaction) : IRequest<IEnumerable<ReactionRole>>;
 
         public sealed class QueryHandler : IRequestHandler<Query, IEnumerable<ReactionRole>>
         {
@@ -29,36 +29,47 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                 var queryable = context.ReactionRoles
                     .AsQueryable();
 
+                if (request.Id.HasValue)
+                {
+                    queryable = queryable
+                        .Where(entity => entity.Id == request.Id);
+                }
+
                 if (request.GuildId.HasValue)
                 {
-                    queryable = queryable.Where(reactionRole => reactionRole.GuildId == request.GuildId);
+                    queryable = queryable
+                        .Where(entity => entity.GuildId == request.GuildId);
                 }
 
                 if (request.ChannelId.HasValue)
                 {
-                    queryable = queryable.Where(reactionRole => reactionRole.ChannelId == request.ChannelId);
+                    queryable = queryable
+                        .Where(entity => entity.ChannelId == request.ChannelId);
                 }
 
                 if (request.MessageId.HasValue)
                 {
-                    queryable = queryable.Where(reactionRole => reactionRole.MessageId == request.MessageId);
+                    queryable = queryable
+                        .Where(entity => entity.MessageId == request.MessageId);
                 }
 
                 if (request.RoleId.HasValue)
                 {
-                    queryable = queryable.Where(reactionRole => reactionRole.RoleId == request.RoleId);
+                    queryable = queryable
+                        .Where(entity => entity.RoleId == request.RoleId);
                 }
 
                 if (!string.IsNullOrWhiteSpace(request.Reaction))
                 {
-                    queryable = queryable.Where(reactionRole => reactionRole.Reaction == request.Reaction);
+                    queryable = queryable
+                        .Where(entity => entity.Reaction == request.Reaction);
                 }
 
-                var reactionRoles = await queryable
+                var entities = await queryable
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
 
-                return reactionRoles;
+                return entities;
             }
         }
     }

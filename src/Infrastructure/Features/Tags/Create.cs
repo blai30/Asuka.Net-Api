@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AsukaApi.Infrastructure.Features.Tags
 {
-    public sealed class Create
+    public class Create
     {
         public sealed record Command(string Name, string Content, string? Reaction, ulong GuildId, ulong UserId) : IRequest;
 
@@ -24,7 +24,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
             {
                 await using var context = _factory.CreateDbContext();
 
-                var tag = new Tag
+                var entity = new Tag
                 {
                     Name = request.Name,
                     Content = request.Content,
@@ -33,7 +33,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
                     UserId = request.UserId
                 };
 
-                await context.Tags.AddAsync(tag, cancellationToken);
+                await context.Tags.AddAsync(entity, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

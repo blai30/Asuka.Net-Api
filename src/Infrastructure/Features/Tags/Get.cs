@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AsukaApi.Infrastructure.Features.Tags
 {
-    public sealed class Get
+    public class Get
     {
         public sealed record Query(int? Id, string? Name, ulong? GuildId) : IRequest<IEnumerable<Tag>>;
 
@@ -31,24 +31,27 @@ namespace AsukaApi.Infrastructure.Features.Tags
 
                 if (request.Id.HasValue)
                 {
-                    queryable = queryable.Where(tag => tag.Id == request.Id);
+                    queryable = queryable
+                        .Where(entity => entity.Id == request.Id);
                 }
 
                 if (!string.IsNullOrWhiteSpace(request.Name))
                 {
-                    queryable = queryable.Where(tag => tag.Name == request.Name);
+                    queryable = queryable
+                        .Where(entity => entity.Name == request.Name);
                 }
 
                 if (request.GuildId.HasValue)
                 {
-                    queryable = queryable.Where(tag => tag.GuildId == request.GuildId);
+                    queryable = queryable
+                        .Where(entity => entity.GuildId == request.GuildId);
                 }
 
-                var tags = await queryable
+                var entities = await queryable
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
 
-                return tags;
+                return entities;
             }
         }
     }

@@ -8,13 +8,9 @@ namespace AsukaApi.Controllers
     public class TagsController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAsync(
-            [FromQuery] int? id,
-            [FromQuery] string? name,
-            [FromQuery] ulong? guildId,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAsync([FromQuery] Get.Query query, CancellationToken cancellationToken)
         {
-            var response = await Mediator.Send(new Get.Query(id, name, guildId), cancellationToken);
+            var response = await Mediator.Send(query, cancellationToken);
             return Ok(response);
         }
 

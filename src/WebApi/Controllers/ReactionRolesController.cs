@@ -8,16 +8,9 @@ namespace AsukaApi.Controllers
     public class ReactionRolesController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAsync(
-            [FromQuery] ulong? guildId,
-            [FromQuery] ulong? channelId,
-            [FromQuery] ulong? messageId,
-            [FromQuery] ulong? roleId,
-            [FromQuery] string? reaction,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAsync([FromQuery] Get.Query query, CancellationToken cancellationToken)
         {
-            var response = await Mediator.Send(
-                new Get.Query(guildId, channelId, messageId, roleId, reaction),cancellationToken);
+            var response = await Mediator.Send(query, cancellationToken);
             return Ok(response);
         }
 
@@ -32,6 +25,13 @@ namespace AsukaApi.Controllers
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var response = await Mediator.Send(new Delete.Command(id));
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync([FromQuery] DeleteBulk.Command command)
+        {
+            var response = await Mediator.Send(command);
             return NoContent();
         }
     }

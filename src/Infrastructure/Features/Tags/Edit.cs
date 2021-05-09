@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using AsukaApi.Infrastructure.Persistence;
 using MediatR;
@@ -6,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AsukaApi.Infrastructure.Features.Tags
 {
-    public sealed class Edit
+    public class Edit
     {
         public sealed record Command(int Id, string Content, string? Reaction) : IRequest;
 
@@ -26,6 +28,11 @@ namespace AsukaApi.Infrastructure.Features.Tags
                 var entity = await context.Tags
                     .AsQueryable()
                     .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+
+                if (entity is null)
+                {
+                    throw new HttpRequestException("Tag not found", null, HttpStatusCode.NotFound);
+                }
 
                 entity.Content = request.Content;
                 entity.Reaction = request.Reaction;

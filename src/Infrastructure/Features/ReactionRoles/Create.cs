@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AsukaApi.Infrastructure.Features.ReactionRoles
 {
-    public sealed class Create
+    public class Create
     {
         public sealed record Command(ulong GuildId, ulong ChannelId, ulong MessageId, ulong RoleId, string Reaction) : IRequest;
 
@@ -24,7 +24,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
             {
                 await using var context = _factory.CreateDbContext();
 
-                var reactionRole = new ReactionRole
+                var entity = new ReactionRole
                 {
                     GuildId = request.GuildId,
                     ChannelId = request.ChannelId,
@@ -33,7 +33,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                     Reaction = request.Reaction
                 };
 
-                await context.ReactionRoles.AddAsync(reactionRole, cancellationToken);
+                await context.ReactionRoles.AddAsync(entity, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;
