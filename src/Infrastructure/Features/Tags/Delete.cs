@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AsukaApi.Infrastructure.Features.Tags
 {
-    public class Delete
+    public static class Delete
     {
         public sealed record Command(int Id) : IRequest;
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AsukaApi.Infrastructure.Features.Tags
 {
-    public class Edit
+    public static class Edit
     {
         public sealed record Command(int Id, string Content, string? Reaction) : IRequest;
 

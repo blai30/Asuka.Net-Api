@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AsukaApi.Infrastructure.Features.ReactionRoles
 {
-    public class Create
+    public static class Create
     {
         public sealed record Command(ulong GuildId, ulong ChannelId, ulong MessageId, ulong RoleId, string Reaction) : IRequest;
 

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AsukaApi.Infrastructure.Features.Tags
 {
-    public class Create
+    public static class Create
     {
         public sealed record Command(string Name, string Content, string? Reaction, ulong GuildId, ulong UserId) : IRequest;
 

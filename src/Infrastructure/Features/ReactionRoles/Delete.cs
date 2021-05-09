@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AsukaApi.Infrastructure.Features.ReactionRoles
 {
-    public class Delete
+    public static class Delete
     {
         public sealed record Command(int Id) : IRequest;
 
