@@ -6,6 +6,7 @@ ProjectSection(SolutionItems) = preProject
 	.editorconfig = .editorconfig
 	.env = .env
 	.gitignore = .gitignore
+	docker-compose.yml = docker-compose.yml
 	flyway.conf = flyway.conf
 	README.md = README.md
 EndProjectSection
