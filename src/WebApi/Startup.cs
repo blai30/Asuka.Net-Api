@@ -1,5 +1,4 @@
 using AsukaApi.Application;
-using AsukaApi.Application.Converters;
 using AsukaApi.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -67,11 +66,8 @@ namespace AsukaApi
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
