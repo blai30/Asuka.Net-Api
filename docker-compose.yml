@@ -1,5 +1,10 @@
 version: '3.8'
 
+networks:
+  default:
+    external:
+      name: asukanet_default
+
 volumes:
   asukaapi:
   mysql-db-data:
@@ -15,6 +20,7 @@ services:
       - .env
     ports:
       - 5000:5000
+      - 5001:5001
     build:
       context: .
       dockerfile: src/WebApi/Dockerfile
