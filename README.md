@@ -1,6 +1,6 @@
 # Asuka.Net-Api
 
-Back-end for Asuka.Net Discord bot using ASP.NET.
+ASP.NET Web API backend for Asuka.Net Discord bot written in C# and .NET 6.
 
 ## Application
 * Validation (FluentValidator)
