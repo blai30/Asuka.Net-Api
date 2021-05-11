@@ -24,7 +24,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
             {
                 await using var context = _factory.CreateDbContext();
 
-                var entity = await context.ReactionRoles
+                var entity = await context.ReactionRole
                     .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
                 return entity;

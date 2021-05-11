@@ -25,7 +25,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
             {
                 await using var context = _factory.CreateDbContext();
 
-                var entity = await context.ReactionRoles
+                var entity = await context.ReactionRole
                     .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity is null)
@@ -33,7 +33,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                     throw new HttpRequestException("Entity not found", null, HttpStatusCode.NotFound);
                 }
 
-                context.ReactionRoles.Remove(entity);
+                context.ReactionRole.Remove(entity);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

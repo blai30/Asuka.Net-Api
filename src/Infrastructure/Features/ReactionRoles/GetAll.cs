@@ -26,7 +26,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
             {
                 await using var context = _factory.CreateDbContext();
 
-                var queryable = context.ReactionRoles
+                var queryable = context.ReactionRole
                     .AsQueryable();
 
                 if (request.Id.HasValue)

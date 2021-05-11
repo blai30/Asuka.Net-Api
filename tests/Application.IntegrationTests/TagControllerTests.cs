@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace AsukaApi.Application.IntegrationTests
 {
-    public class TagsControllerTests
+    public class TagControllerTests
     {
         [SetUp]
         public void Setup()

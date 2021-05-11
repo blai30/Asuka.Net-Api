@@ -26,7 +26,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
             {
                 await using var context = _factory.CreateDbContext();
 
-                var queryable = context.Tags
+                var queryable = context.Tag
                     .AsQueryable();
 
                 if (request.Id.HasValue)

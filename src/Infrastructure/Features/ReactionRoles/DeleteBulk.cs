@@ -31,7 +31,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
 
                 if (request.MessageId.HasValue && request.RoleId.HasValue)
                 {
-                    entities = await context.ReactionRoles
+                    entities = await context.ReactionRole
                         .AsNoTracking()
                         .Where(entity =>
                             entity.MessageId == request.MessageId &&
@@ -40,7 +40,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                 }
                 else if (request.MessageId.HasValue && !string.IsNullOrWhiteSpace(request.Reaction))
                 {
-                    entities = await context.ReactionRoles
+                    entities = await context.ReactionRole
                         .AsNoTracking()
                         .Where(entity =>
                             entity.MessageId == request.MessageId &&
@@ -49,7 +49,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                 }
                 else if (request.MessageId.HasValue)
                 {
-                    entities = await context.ReactionRoles
+                    entities = await context.ReactionRole
                         .AsNoTracking()
                         .Where(entity =>
                             entity.MessageId == request.MessageId)
@@ -57,7 +57,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                 }
                 else if (request.RoleId.HasValue)
                 {
-                    entities = await context.ReactionRoles
+                    entities = await context.ReactionRole
                         .AsNoTracking()
                         .Where(entity =>
                             entity.RoleId == request.RoleId)
@@ -69,7 +69,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                     return Unit.Value;
                 }
 
-                context.ReactionRoles.RemoveRange(entities);
+                context.ReactionRole.RemoveRange(entities);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

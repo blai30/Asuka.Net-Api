@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace AsukaApi.Application.UnitTests
 {
-    public class TagsFeatureTests
+    public class TagFeatureTests
     {
         [SetUp]
         public void Setup()
@@ -11,12 +11,12 @@ namespace AsukaApi.Application.UnitTests
         }
 
         [Test]
-        public async Task GetAll_ReturnsAllTags_WhenTagsExists()
+        public async Task GetAll_ReturnsAll_WhenAnyExists()
         {
         }
 
         [Test]
-        public async Task Get_ReturnsTagById_WhenQueryIncludesId()
+        public async Task Get_ReturnsById_WhenQueryIncludesId()
         {
         }
     }

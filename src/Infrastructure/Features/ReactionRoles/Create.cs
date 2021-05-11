@@ -33,7 +33,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                     Reaction = request.Reaction
                 };
 
-                await context.ReactionRoles.AddAsync(entity, cancellationToken);
+                await context.ReactionRole.AddAsync(entity, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

@@ -33,7 +33,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
                     UserId = request.UserId
                 };
 
-                await context.Tags.AddAsync(entity, cancellationToken);
+                await context.Tag.AddAsync(entity, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

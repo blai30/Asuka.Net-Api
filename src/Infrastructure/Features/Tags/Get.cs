@@ -24,7 +24,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
             {
                 await using var context = _factory.CreateDbContext();
 
-                var entity = await context.Tags
+                var entity = await context.Tag
                     .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
                 return entity;

@@ -25,7 +25,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
             {
                 await using var context = _factory.CreateDbContext();
 
-                var entity = await context.Tags
+                var entity = await context.Tag
                     .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity is null)
@@ -33,7 +33,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
                     throw new HttpRequestException("Entity not found", null, HttpStatusCode.NotFound);
                 }
 
-                context.Tags.Remove(entity);
+                context.Tag.Remove(entity);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;
