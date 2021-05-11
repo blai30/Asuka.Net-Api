@@ -9,9 +9,9 @@ namespace AsukaApi.Infrastructure.Features.Tags
 {
     public static class Get
     {
-        public sealed record Query(int Id) : IRequest<Tag>;
+        public sealed record Query(int Id) : IRequest<Tag?>;
 
-        public sealed class QueryHandler : IRequestHandler<Query, Tag>
+        public sealed class QueryHandler : IRequestHandler<Query, Tag?>
         {
             private readonly IDbContextFactory<ApplicationDbContext> _factory;
 
@@ -20,11 +20,11 @@ namespace AsukaApi.Infrastructure.Features.Tags
                 _factory = factory;
             }
 
-            public async Task<Tag> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Tag?> Handle(Query request, CancellationToken cancellationToken)
             {
                 await using var context = _factory.CreateDbContext();
 
-                var entity = await context.Tag
+                var entity = await context.Tags
                     .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
                 return entity;

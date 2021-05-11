@@ -9,9 +9,9 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
 {
     public static class Get
     {
-        public sealed record Query(int Id) : IRequest<ReactionRole>;
+        public sealed record Query(int Id) : IRequest<ReactionRole?>;
 
-        public sealed class QueryHandler : IRequestHandler<Query, ReactionRole>
+        public sealed class QueryHandler : IRequestHandler<Query, ReactionRole?>
         {
             private readonly IDbContextFactory<ApplicationDbContext> _factory;
 
@@ -20,11 +20,11 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                 _factory = factory;
             }
 
-            public async Task<ReactionRole> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<ReactionRole?> Handle(Query request, CancellationToken cancellationToken)
             {
                 await using var context = _factory.CreateDbContext();
 
-                var entity = await context.ReactionRole
+                var entity = await context.ReactionRoles
                     .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
                 return entity;

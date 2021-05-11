@@ -11,9 +11,9 @@ namespace AsukaApi.Infrastructure.Features.Tags
 {
     public static class GetAll
     {
-        public sealed record Query(string? Name, ulong? GuildId) : IRequest<IEnumerable<Tag>>;
+        public sealed record Query(string? Name, ulong? GuildId) : IRequest<IEnumerable<Tag>?>;
 
-        public sealed class QueryHandler : IRequestHandler<Query, IEnumerable<Tag>>
+        public sealed class QueryHandler : IRequestHandler<Query, IEnumerable<Tag>?>
         {
             private readonly IDbContextFactory<ApplicationDbContext> _factory;
 
@@ -22,11 +22,11 @@ namespace AsukaApi.Infrastructure.Features.Tags
                 _factory = factory;
             }
 
-            public async Task<IEnumerable<Tag>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<Tag>?> Handle(Query request, CancellationToken cancellationToken)
             {
                 await using var context = _factory.CreateDbContext();
 
-                var queryable = context.Tag
+                var queryable = context.Tags
                     .AsQueryable();
 
                 if (!string.IsNullOrWhiteSpace(request.Name))

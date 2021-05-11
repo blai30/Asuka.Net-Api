@@ -7,10 +7,10 @@ using Microsoft.Extensions.Logging;
 
 namespace AsukaApi.Controllers
 {
-    public class TagController : ApiControllerBase
+    public class TagsController : ApiControllerBase
     {
-        public TagController(
-            ILogger<TagController> logger,
+        public TagsController(
+            ILogger<TagsController> logger,
             IMediator mediator) :
             base(logger, mediator)
         {
@@ -20,14 +20,14 @@ namespace AsukaApi.Controllers
         public async Task<IActionResult> GetAsync(int id, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new Get.Query(id), cancellationToken);
-            return Ok(response);
+            return response is null ? NotFound(response) : Ok(response);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAsync([FromQuery] GetAll.Query query, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(query, cancellationToken);
-            return Ok(response);
+            return response is null ? NotFound(response) : Ok(response);
         }
 
         [HttpPost]

@@ -11,9 +11,9 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
 {
     public static class GetAll
     {
-        public sealed record Query(ulong? GuildId, ulong? ChannelId, ulong? MessageId, ulong? RoleId) : IRequest<IEnumerable<ReactionRole>>;
+        public sealed record Query(ulong? GuildId, ulong? ChannelId, ulong? MessageId, ulong? RoleId) : IRequest<IEnumerable<ReactionRole>?>;
 
-        public sealed class QueryHandler : IRequestHandler<Query, IEnumerable<ReactionRole>>
+        public sealed class QueryHandler : IRequestHandler<Query, IEnumerable<ReactionRole>?>
         {
             private readonly IDbContextFactory<ApplicationDbContext> _factory;
 
@@ -22,11 +22,11 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                 _factory = factory;
             }
 
-            public async Task<IEnumerable<ReactionRole>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<ReactionRole>?> Handle(Query request, CancellationToken cancellationToken)
             {
                 await using var context = _factory.CreateDbContext();
 
-                var queryable = context.ReactionRole
+                var queryable = context.ReactionRoles
                     .AsQueryable();
 
                 if (request.GuildId.HasValue)

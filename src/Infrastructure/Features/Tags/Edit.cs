@@ -25,7 +25,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
             {
                 await using var context = _factory.CreateDbContext();
 
-                var entity = await context.Tag
+                var entity = await context.Tags
                     .AsQueryable()
                     .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
@@ -37,7 +37,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
                 entity.Content = request.Content;
                 entity.Reaction = request.Reaction;
 
-                context.Tag.Attach(entity);
+                context.Tags.Attach(entity);
                 context.Entry(entity).Property(t => t.Content).IsModified = true;
                 context.Entry(entity).Property(t => t.Reaction).IsModified = true;
                 await context.SaveChangesAsync(cancellationToken);

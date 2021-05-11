@@ -17,8 +17,8 @@ namespace AsukaApi.Infrastructure.Persistence
             _scopeFactory = scopeFactory;
         }
 
-        public DbSet<Tag> Tag { get; set; } = null!;
-        public DbSet<ReactionRole> ReactionRole { get; set; } = null!;
+        public DbSet<Tag> Tags { get; set; } = null!;
+        public DbSet<ReactionRole> ReactionRoles { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
