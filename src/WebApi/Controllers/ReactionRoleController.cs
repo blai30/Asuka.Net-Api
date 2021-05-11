@@ -34,21 +34,21 @@ namespace AsukaApi.Controllers
         public async Task<IActionResult> CreateAsync([FromBody] Create.Command command,
             CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(command, cancellationToken);
+            await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var response = await _mediator.Send(new Delete.Command(id));
+            await _mediator.Send(new Delete.Command(id));
             return NoContent();
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync([FromQuery] DeleteBulk.Command command)
         {
-            var response = await _mediator.Send(command);
+            await _mediator.Send(command);
             return NoContent();
         }
     }

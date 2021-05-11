@@ -17,8 +17,8 @@ namespace AsukaApi.Infrastructure.Persistence
             _scopeFactory = scopeFactory;
         }
 
-        public DbSet<Tag> Tag { get; set; }
-        public DbSet<ReactionRole> ReactionRole { get; set; }
+        public DbSet<Tag> Tag { get; set; } = null!;
+        public DbSet<ReactionRole> ReactionRole { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -27,10 +27,9 @@ namespace AsukaApi.Infrastructure.Persistence
                 .GetRequiredService<IConfiguration>()
                 .GetConnectionString("Docker");
 
-            optionsBuilder
-                .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-                // Map PascalCase POCO properties to snake_case MySQL tables and columns.
-                .UseSnakeCaseNamingConvention();
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            // Map PascalCase POCO properties to snake_case MySQL tables and columns.
+            optionsBuilder.UseSnakeCaseNamingConvention();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
