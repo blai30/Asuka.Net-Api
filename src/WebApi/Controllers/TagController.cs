@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AsukaApi.Controllers
 {
-    public class TagController : ApiControllerBase<TagController>
+    public class TagController : ApiControllerBase
     {
         public TagController(
             ILogger<TagController> logger,

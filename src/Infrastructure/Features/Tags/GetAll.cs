@@ -11,7 +11,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
 {
     public static class GetAll
     {
-        public sealed record Query(int? Id, string? Name, ulong? GuildId) : IRequest<IEnumerable<Tag>>;
+        public sealed record Query(string? Name, ulong? GuildId) : IRequest<IEnumerable<Tag>>;
 
         public sealed class QueryHandler : IRequestHandler<Query, IEnumerable<Tag>>
         {
@@ -28,12 +28,6 @@ namespace AsukaApi.Infrastructure.Features.Tags
 
                 var queryable = context.Tag
                     .AsQueryable();
-
-                if (request.Id.HasValue)
-                {
-                    queryable = queryable
-                        .Where(entity => entity.Id == request.Id);
-                }
 
                 if (!string.IsNullOrWhiteSpace(request.Name))
                 {

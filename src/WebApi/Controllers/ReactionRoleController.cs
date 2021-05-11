@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AsukaApi.Controllers
 {
-    public class ReactionRoleController : ApiControllerBase<ReactionRoleController>
+    public class ReactionRoleController : ApiControllerBase
     {
         public ReactionRoleController(
             ILogger<ReactionRoleController> logger,

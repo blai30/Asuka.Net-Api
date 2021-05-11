@@ -6,12 +6,12 @@ namespace AsukaApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public abstract class ApiControllerBase<T> : ControllerBase where T : ApiControllerBase<T>
+    public abstract class ApiControllerBase : ControllerBase
     {
-        protected readonly ILogger<T> _logger;
+        private readonly ILogger _logger;
         protected readonly IMediator _mediator;
 
-        protected ApiControllerBase(ILogger<T> logger, IMediator mediator)
+        protected ApiControllerBase(ILogger logger, IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;

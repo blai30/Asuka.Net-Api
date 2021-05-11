@@ -11,7 +11,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
 {
     public static class GetAll
     {
-        public sealed record Query(int? Id, ulong? GuildId, ulong? ChannelId, ulong? MessageId, ulong? RoleId, string? Reaction) : IRequest<IEnumerable<ReactionRole>>;
+        public sealed record Query(ulong? GuildId, ulong? ChannelId, ulong? MessageId, ulong? RoleId) : IRequest<IEnumerable<ReactionRole>>;
 
         public sealed class QueryHandler : IRequestHandler<Query, IEnumerable<ReactionRole>>
         {
@@ -28,12 +28,6 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
 
                 var queryable = context.ReactionRole
                     .AsQueryable();
-
-                if (request.Id.HasValue)
-                {
-                    queryable = queryable
-                        .Where(entity => entity.Id == request.Id);
-                }
 
                 if (request.GuildId.HasValue)
                 {
@@ -57,12 +51,6 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                 {
                     queryable = queryable
                         .Where(entity => entity.RoleId == request.RoleId);
-                }
-
-                if (!string.IsNullOrWhiteSpace(request.Reaction))
-                {
-                    queryable = queryable
-                        .Where(entity => entity.Reaction == request.Reaction);
                 }
 
                 var entities = await queryable
