@@ -1,14 +1,14 @@
-﻿using AsukaApi.Application.Common;
+﻿using AsukaApi.Domain.Common;
 
-namespace AsukaApi.Application.Entities
+namespace AsukaApi.Domain.Models
 {
     public class Tag : AuditableEntity
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
-        public string Content { get; set; }
+        public string Content { get; set; } = default!;
 
         public string? Reaction { get; set; }
 

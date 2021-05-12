@@ -20,29 +20,53 @@ namespace AsukaApi.Controllers
         public async Task<IActionResult> GetAsync(int id, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new Get.Query(id), cancellationToken);
-            return response is null ? NotFound(response) : Ok(response);
+
+            if (response is null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAsync([FromQuery] GetAll.Query query, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(query, cancellationToken);
-            return response is null ? NotFound(response) : Ok(response);
+
+            if (response is null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] Create.Command command,
             CancellationToken cancellationToken)
         {
-            await _mediator.Send(command, cancellationToken);
-            return NoContent();
+            var response = await _mediator.Send(command, cancellationToken);
+
+            if (response is null)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            await _mediator.Send(new Delete.Command(id));
-            return NoContent();
+            var response = await _mediator.Send(new Delete.Command(id));
+
+            if (response is null)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpDelete]

@@ -18,6 +18,6 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
         [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
         public ulong RoleId { get; init; }
 
-        public string Reaction { get; init; }
+        public string Reaction { get; init; } = default!;
     }
 }

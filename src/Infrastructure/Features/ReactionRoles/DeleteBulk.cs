@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AsukaApi.Application.Entities;
+using AsukaApi.Domain.Models;
 using AsukaApi.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -22,12 +22,10 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                 _factory = factory;
             }
 
-
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                await using var context = _factory.CreateDbContext();
-
                 List<ReactionRole>? entities = null;
+                await using var context = _factory.CreateDbContext();
 
                 if (request.MessageId.HasValue && request.RoleId.HasValue)
                 {

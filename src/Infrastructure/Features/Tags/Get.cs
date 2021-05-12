@@ -25,13 +25,11 @@ namespace AsukaApi.Infrastructure.Features.Tags
             public async Task<TagDto?> Handle(Query request, CancellationToken cancellationToken)
             {
                 await using var context = _factory.CreateDbContext();
-
-                var entity = context.Tags.AsNoTracking();
-
-                var dto = await _mapper
-                    .ProjectTo<TagDto>(entity)
+                var entity = context.Tags
+                    .AsNoTracking()
                     .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
+                var dto = _mapper.Map<TagDto>(entity);
                 return dto;
             }
         }

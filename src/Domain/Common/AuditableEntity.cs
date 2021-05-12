@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AsukaApi.Application.Common
+namespace AsukaApi.Domain.Common
 {
     public abstract class AuditableEntity
     {

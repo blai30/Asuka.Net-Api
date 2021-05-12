@@ -1,6 +1,6 @@
-﻿using AsukaApi.Application.Common;
+﻿using AsukaApi.Domain.Common;
 
-namespace AsukaApi.Application.Entities
+namespace AsukaApi.Domain.Models
 {
     public class ReactionRole : AuditableEntity
     {
@@ -14,6 +14,6 @@ namespace AsukaApi.Application.Entities
 
         public ulong RoleId { get; set; }
 
-        public string Reaction { get; set; }
+        public string Reaction { get; set; } = default!;
     }
 }

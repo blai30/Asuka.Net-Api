@@ -1,4 +1,4 @@
-﻿using AsukaApi.Application.Entities;
+﻿using AsukaApi.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

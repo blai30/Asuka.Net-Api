@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using AsukaApi.Application.Entities;
+using AsukaApi.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,8 +17,8 @@ namespace AsukaApi.Infrastructure.Persistence
             _scopeFactory = scopeFactory;
         }
 
-        public DbSet<Tag> Tags { get; set; } = null!;
-        public DbSet<ReactionRole> ReactionRoles { get; set; } = null!;
+        public DbSet<Tag> Tags { get; set; } = default!;
+        public DbSet<ReactionRole> ReactionRoles { get; set; } = default!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

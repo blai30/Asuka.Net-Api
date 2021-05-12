@@ -6,9 +6,9 @@ namespace AsukaApi.Infrastructure.Features.Tags
     {
         public int Id { get; init; }
 
-        public string Name { get; init; }
+        public string Name { get; init; } = default!;
 
-        public string Content { get; init; }
+        public string Content { get; init; } = default!;
 
         public string? Reaction { get; init; }
 

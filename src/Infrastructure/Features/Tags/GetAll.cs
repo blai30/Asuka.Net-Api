@@ -27,9 +27,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
             public async Task<IEnumerable<TagDto>?> Handle(Query request, CancellationToken cancellationToken)
             {
                 await using var context = _factory.CreateDbContext();
-
                 var queryable = context.Tags.AsQueryable();
-
                 var entities = _mapper.ProjectTo<TagDto>(queryable);
 
                 if (!string.IsNullOrWhiteSpace(request.Name))

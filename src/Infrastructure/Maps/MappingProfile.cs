@@ -1,4 +1,4 @@
-﻿using AsukaApi.Application.Entities;
+﻿using AsukaApi.Domain.Models;
 using AsukaApi.Infrastructure.Features.ReactionRoles;
 using AsukaApi.Infrastructure.Features.Tags;
 using AutoMapper.Configuration;

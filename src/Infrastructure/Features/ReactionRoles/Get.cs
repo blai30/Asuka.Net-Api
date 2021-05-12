@@ -25,13 +25,11 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
             public async Task<ReactionRoleDto?> Handle(Query request, CancellationToken cancellationToken)
             {
                 await using var context = _factory.CreateDbContext();
-
-                var entity = context.ReactionRoles.AsNoTracking();
-
-                var dto = await _mapper
-                    .ProjectTo<ReactionRoleDto>(entity)
+                var entity = context.ReactionRoles
+                    .AsNoTracking()
                     .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
+                var dto = _mapper.Map<ReactionRoleDto>(entity);
                 return dto;
             }
         }

@@ -27,9 +27,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
             public async Task<IEnumerable<ReactionRoleDto>?> Handle(Query request, CancellationToken cancellationToken)
             {
                 await using var context = _factory.CreateDbContext();
-
                 var queryable = context.ReactionRoles.AsQueryable();
-
                 var entities = _mapper.ProjectTo<ReactionRoleDto>(queryable);
 
                 if (request.GuildId.HasValue)

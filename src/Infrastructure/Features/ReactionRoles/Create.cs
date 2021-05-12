@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using AsukaApi.Application.Entities;
+using AsukaApi.Domain.Models;
 using AsukaApi.Infrastructure.Persistence;
 using AutoMapper;
 using MediatR;
@@ -10,9 +10,9 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
 {
     public static class Create
     {
-        public sealed record Command(ulong GuildId, ulong ChannelId, ulong MessageId, ulong RoleId, string Reaction) : IRequest;
+        public sealed record Command(ulong GuildId, ulong ChannelId, ulong MessageId, ulong RoleId, string Reaction) : IRequest<ReactionRoleDto?>;
 
-        public sealed class CommandHandler : IRequestHandler<Command>
+        public sealed class CommandHandler : IRequestHandler<Command, ReactionRoleDto?>
         {
             private readonly IDbContextFactory<ApplicationDbContext> _factory;
             private readonly IMapper _mapper;
@@ -23,10 +23,8 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                 _mapper = mapper;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<ReactionRoleDto?> Handle(Command request, CancellationToken cancellationToken)
             {
-                await using var context = _factory.CreateDbContext();
-
                 var dto = new ReactionRoleDto
                 {
                     GuildId = request.GuildId,
@@ -38,10 +36,11 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
 
                 var entity = _mapper.Map<ReactionRole>(dto);
 
+                await using var context = _factory.CreateDbContext();
                 await context.ReactionRoles.AddAsync(entity, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
 
-                return Unit.Value;
+                return dto;
             }
         }
     }
