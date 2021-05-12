@@ -9,6 +9,7 @@ namespace AsukaApi.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddDbContextFactory<ApplicationDbContext>();
 

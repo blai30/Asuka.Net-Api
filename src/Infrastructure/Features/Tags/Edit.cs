@@ -26,7 +26,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
                 await using var context = _factory.CreateDbContext();
 
                 var entity = await context.Tags
-                    .AsQueryable()
+                    .AsNoTracking()
                     .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity is null)

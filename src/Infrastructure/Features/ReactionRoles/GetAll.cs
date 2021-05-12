@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AsukaApi.Application.Entities;
 using AsukaApi.Infrastructure.Persistence;
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,53 +11,56 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
 {
     public static class GetAll
     {
-        public sealed record Query(ulong? GuildId, ulong? ChannelId, ulong? MessageId, ulong? RoleId) : IRequest<IEnumerable<ReactionRole>?>;
+        public sealed record Query(ulong? GuildId, ulong? ChannelId, ulong? MessageId, ulong? RoleId) : IRequest<IEnumerable<ReactionRoleDto>?>;
 
-        public sealed class QueryHandler : IRequestHandler<Query, IEnumerable<ReactionRole>?>
+        public sealed class QueryHandler : IRequestHandler<Query, IEnumerable<ReactionRoleDto>?>
         {
             private readonly IDbContextFactory<ApplicationDbContext> _factory;
+            private readonly IMapper _mapper;
 
-            public QueryHandler(IDbContextFactory<ApplicationDbContext> factory)
+            public QueryHandler(IDbContextFactory<ApplicationDbContext> factory, IMapper mapper)
             {
                 _factory = factory;
+                _mapper = mapper;
             }
 
-            public async Task<IEnumerable<ReactionRole>?> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<ReactionRoleDto>?> Handle(Query request, CancellationToken cancellationToken)
             {
                 await using var context = _factory.CreateDbContext();
 
-                var queryable = context.ReactionRoles
-                    .AsQueryable();
+                var queryable = context.ReactionRoles.AsQueryable();
+
+                var entities = _mapper.ProjectTo<ReactionRoleDto>(queryable);
 
                 if (request.GuildId.HasValue)
                 {
-                    queryable = queryable
+                    entities = entities
                         .Where(entity => entity.GuildId == request.GuildId);
                 }
 
                 if (request.ChannelId.HasValue)
                 {
-                    queryable = queryable
+                    entities = entities
                         .Where(entity => entity.ChannelId == request.ChannelId);
                 }
 
                 if (request.MessageId.HasValue)
                 {
-                    queryable = queryable
+                    entities = entities
                         .Where(entity => entity.MessageId == request.MessageId);
                 }
 
                 if (request.RoleId.HasValue)
                 {
-                    queryable = queryable
+                    entities = entities
                         .Where(entity => entity.RoleId == request.RoleId);
                 }
 
-                var entities = await queryable
+                var dto = await entities
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
 
-                return entities;
+                return dto;
             }
         }
     }
