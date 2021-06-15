@@ -10,7 +10,7 @@ services:
     image: asukaapi
     restart: always
     volumes:
-      - asukaapi
+      - asukaapi:/asukaapi
     env_file:
       - .env
     ports:
