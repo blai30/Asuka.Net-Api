@@ -9,6 +9,7 @@ services:
     container_name: asukaapi
     image: asukaapi
     restart: always
+    # To store logs.
     volumes:
       - asukaapi:/asukaapi
     env_file:
@@ -20,7 +21,7 @@ services:
       context: .
       dockerfile: src/WebApi/Dockerfile
     # Application might continue crashing until
-    # dependent service(s) fully initialize
+    # dependent service(s) fully initialize.
     depends_on:
       - db
 
