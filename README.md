@@ -1,6 +1,6 @@
 # Asuka.Net-Api (Server)
 
-Client repo: [Link to Discord bot client](https://github,com/blai30/Asuka.Net)
+Client repo: [Link to Discord bot client](https://github.com/blai30/Asuka.Net)
 
 ASP.NET Web API backend for Asuka.Net Discord bot written in C# and .NET 6.
 
