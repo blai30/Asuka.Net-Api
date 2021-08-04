@@ -25,7 +25,7 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
 
             public async Task<ReactionRoleDto?> Handle(Command request, CancellationToken cancellationToken)
             {
-                var dto = new ReactionRoleDto
+                var entity = new ReactionRole
                 {
                     GuildId = request.GuildId,
                     ChannelId = request.ChannelId,
@@ -34,11 +34,11 @@ namespace AsukaApi.Infrastructure.Features.ReactionRoles
                     Reaction = request.Reaction
                 };
 
-                var entity = _mapper.Map<ReactionRole>(dto);
-
                 await using var context = _factory.CreateDbContext();
-                await context.ReactionRoles.AddAsync(entity, cancellationToken);
+                var entry = await context.ReactionRoles.AddAsync(entity, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
+
+                var dto = _mapper.Map<ReactionRoleDto>(entry.Entity);
 
                 return dto;
             }

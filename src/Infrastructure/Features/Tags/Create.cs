@@ -25,7 +25,7 @@ namespace AsukaApi.Infrastructure.Features.Tags
 
             public async Task<TagDto?> Handle(Command request, CancellationToken cancellationToken)
             {
-                var dto = new TagDto
+                var entity = new Tag
                 {
                     Name = request.Name,
                     Content = request.Content,
@@ -34,11 +34,11 @@ namespace AsukaApi.Infrastructure.Features.Tags
                     UserId = request.UserId
                 };
 
-                var entity = _mapper.Map<Tag>(dto);
-
                 await using var context = _factory.CreateDbContext();
-                await context.Tags.AddAsync(entity, cancellationToken);
+                var entry = await context.Tags.AddAsync(entity, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
+
+                var dto = _mapper.Map<TagDto>(entry.Entity);
 
                 return dto;
             }
