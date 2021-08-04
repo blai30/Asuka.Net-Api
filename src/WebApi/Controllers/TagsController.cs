@@ -16,21 +16,8 @@ namespace AsukaApi.Controllers
         {
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(new Get.Query(id), cancellationToken);
-
-            if (response is null)
-            {
-                return NotFound(response);
-            }
-
-            return Ok(response);
-        }
-
         [HttpGet]
-        public async Task<IActionResult> GetAsync([FromQuery] GetAll.Query query, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetTags([FromQuery] GetAll.Query query, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(query, cancellationToken);
 
@@ -42,8 +29,21 @@ namespace AsukaApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTag(int id, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new Get.Query(id), cancellationToken);
+
+            if (response is null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] Create.Command command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateTag([FromBody] Create.Command command, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command, cancellationToken);
 
@@ -52,11 +52,11 @@ namespace AsukaApi.Controllers
                 return BadRequest(response);
             }
 
-            return CreatedAtAction(nameof(Get), response);
+            return CreatedAtAction(nameof(GetTag), new { response.Id }, response);
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditAsync([FromBody] Edit.Command command, CancellationToken cancellationToken)
+        public async Task<IActionResult> EditTag([FromBody] Edit.Command command, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command, cancellationToken);
 
@@ -69,7 +69,7 @@ namespace AsukaApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> DeleteTag(int id)
         {
             var response = await _mediator.Send(new Delete.Command(id));
 

@@ -16,21 +16,8 @@ namespace AsukaApi.Controllers
         {
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(new Get.Query(id), cancellationToken);
-
-            if (response is null)
-            {
-                return NotFound(response);
-            }
-
-            return Ok(response);
-        }
-
         [HttpGet]
-        public async Task<IActionResult> GetAsync([FromQuery] GetAll.Query query, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetReactionRoles([FromQuery] GetAll.Query query, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(query, cancellationToken);
 
@@ -42,8 +29,21 @@ namespace AsukaApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetReactionRole(int id, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new Get.Query(id), cancellationToken);
+
+            if (response is null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] Create.Command command,
+        public async Task<IActionResult> CreateReactionRole([FromBody] Create.Command command,
             CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command, cancellationToken);
@@ -53,11 +53,11 @@ namespace AsukaApi.Controllers
                 return BadRequest(response);
             }
 
-            return Ok(response);
+            return CreatedAtAction(nameof(GetReactionRole), new { response.Id }, response);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> DeleteReactionRole(int id)
         {
             var response = await _mediator.Send(new Delete.Command(id));
 
@@ -70,7 +70,7 @@ namespace AsukaApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAsync([FromQuery] DeleteBulk.Command command)
+        public async Task<IActionResult> DeleteReactionRoles([FromQuery] DeleteBulk.Command command)
         {
             await _mediator.Send(command);
             return NoContent();
