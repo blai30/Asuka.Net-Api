@@ -7,46 +7,45 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace AsukaApi.Infrastructure.Features.Tags
+namespace AsukaApi.Infrastructure.Features.Tags;
+
+public static class Edit
 {
-    public static class Edit
+    public sealed record Command(int Id, string Content, string? Reaction) : IRequest<TagDto?>;
+
+    public sealed class CommandHandler : IRequestHandler<Command, TagDto?>
     {
-        public sealed record Command(int Id, string Content, string? Reaction) : IRequest<TagDto?>;
+        private readonly IDbContextFactory<ApplicationDbContext> _factory;
+        private readonly IMapper _mapper;
 
-        public sealed class CommandHandler : IRequestHandler<Command, TagDto?>
+        public CommandHandler(IDbContextFactory<ApplicationDbContext> factory, IMapper mapper)
         {
-            private readonly IDbContextFactory<ApplicationDbContext> _factory;
-            private readonly IMapper _mapper;
+            _factory = factory;
+            _mapper = mapper;
+        }
 
-            public CommandHandler(IDbContextFactory<ApplicationDbContext> factory, IMapper mapper)
+        public async Task<TagDto?> Handle(Command request, CancellationToken cancellationToken)
+        {
+            await using var context = await _factory.CreateDbContextAsync(cancellationToken);
+            var entity = await context.Tags
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+
+            if (entity is null)
             {
-                _factory = factory;
-                _mapper = mapper;
+                throw new HttpRequestException("Tag not found", null, HttpStatusCode.NotFound);
             }
 
-            public async Task<TagDto?> Handle(Command request, CancellationToken cancellationToken)
-            {
-                await using var context = _factory.CreateDbContext();
-                var entity = await context.Tags
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+            entity.Content = request.Content;
+            entity.Reaction = request.Reaction;
 
-                if (entity is null)
-                {
-                    throw new HttpRequestException("Tag not found", null, HttpStatusCode.NotFound);
-                }
+            context.Tags.Attach(entity);
+            context.Entry(entity).Property(t => t.Content).IsModified = true;
+            context.Entry(entity).Property(t => t.Reaction).IsModified = true;
+            await context.SaveChangesAsync(cancellationToken);
 
-                entity.Content = request.Content;
-                entity.Reaction = request.Reaction;
-
-                context.Tags.Attach(entity);
-                context.Entry(entity).Property(t => t.Content).IsModified = true;
-                context.Entry(entity).Property(t => t.Reaction).IsModified = true;
-                await context.SaveChangesAsync(cancellationToken);
-
-                var dto = _mapper.Map<TagDto>(entity);
-                return dto;
-            }
+            var dto = _mapper.Map<TagDto>(entity);
+            return dto;
         }
     }
 }

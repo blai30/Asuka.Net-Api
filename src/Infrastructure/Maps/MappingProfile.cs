@@ -3,14 +3,13 @@ using AsukaApi.Infrastructure.Features.ReactionRoles;
 using AsukaApi.Infrastructure.Features.Tags;
 using AutoMapper.Configuration;
 
-namespace AsukaApi.Infrastructure.Maps
+namespace AsukaApi.Infrastructure.Maps;
+
+public class MappingProfile : MapperConfigurationExpression
 {
-    public class MappingProfile : MapperConfigurationExpression
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<Tag, TagDto>().ReverseMap();
-            CreateMap<ReactionRole, ReactionRoleDto>().ReverseMap();
-        }
+        CreateMap<Tag, TagDto>().ReverseMap();
+        CreateMap<ReactionRole, ReactionRoleDto>().ReverseMap();
     }
 }

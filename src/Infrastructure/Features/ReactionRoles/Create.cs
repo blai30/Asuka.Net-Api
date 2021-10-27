@@ -6,42 +6,41 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace AsukaApi.Infrastructure.Features.ReactionRoles
+namespace AsukaApi.Infrastructure.Features.ReactionRoles;
+
+public static class Create
 {
-    public static class Create
+    public sealed record Command(ulong GuildId, ulong ChannelId, ulong MessageId, ulong RoleId, string Reaction) : IRequest<ReactionRoleDto?>;
+
+    public sealed class CommandHandler : IRequestHandler<Command, ReactionRoleDto?>
     {
-        public sealed record Command(ulong GuildId, ulong ChannelId, ulong MessageId, ulong RoleId, string Reaction) : IRequest<ReactionRoleDto?>;
+        private readonly IDbContextFactory<ApplicationDbContext> _factory;
+        private readonly IMapper _mapper;
 
-        public sealed class CommandHandler : IRequestHandler<Command, ReactionRoleDto?>
+        public CommandHandler(IDbContextFactory<ApplicationDbContext> factory, IMapper mapper)
         {
-            private readonly IDbContextFactory<ApplicationDbContext> _factory;
-            private readonly IMapper _mapper;
+            _factory = factory;
+            _mapper = mapper;
+        }
 
-            public CommandHandler(IDbContextFactory<ApplicationDbContext> factory, IMapper mapper)
+        public async Task<ReactionRoleDto?> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var entity = new ReactionRole
             {
-                _factory = factory;
-                _mapper = mapper;
-            }
+                GuildId = request.GuildId,
+                ChannelId = request.ChannelId,
+                MessageId = request.MessageId,
+                RoleId = request.RoleId,
+                Reaction = request.Reaction
+            };
 
-            public async Task<ReactionRoleDto?> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var entity = new ReactionRole
-                {
-                    GuildId = request.GuildId,
-                    ChannelId = request.ChannelId,
-                    MessageId = request.MessageId,
-                    RoleId = request.RoleId,
-                    Reaction = request.Reaction
-                };
+            await using var context = await _factory.CreateDbContextAsync(cancellationToken);
+            var entry = await context.ReactionRoles.AddAsync(entity, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-                await using var context = _factory.CreateDbContext();
-                var entry = await context.ReactionRoles.AddAsync(entity, cancellationToken);
-                await context.SaveChangesAsync(cancellationToken);
+            var dto = _mapper.Map<ReactionRoleDto>(entry.Entity);
 
-                var dto = _mapper.Map<ReactionRoleDto>(entry.Entity);
-
-                return dto;
-            }
+            return dto;
         }
     }
 }

@@ -7,40 +7,39 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace AsukaApi.Infrastructure.Features.ReactionRoles
+namespace AsukaApi.Infrastructure.Features.ReactionRoles;
+
+public static class Delete
 {
-    public static class Delete
+    public sealed record Command(int Id) : IRequest<ReactionRoleDto?>;
+
+    public sealed class CommandHandler : IRequestHandler<Command, ReactionRoleDto?>
     {
-        public sealed record Command(int Id) : IRequest<ReactionRoleDto?>;
+        private readonly IDbContextFactory<ApplicationDbContext> _factory;
+        private readonly IMapper _mapper;
 
-        public sealed class CommandHandler : IRequestHandler<Command, ReactionRoleDto?>
+        public CommandHandler(IDbContextFactory<ApplicationDbContext> factory, IMapper mapper)
         {
-            private readonly IDbContextFactory<ApplicationDbContext> _factory;
-            private readonly IMapper _mapper;
+            _factory = factory;
+            _mapper = mapper;
+        }
 
-            public CommandHandler(IDbContextFactory<ApplicationDbContext> factory, IMapper mapper)
+        public async Task<ReactionRoleDto?> Handle(Command request, CancellationToken cancellationToken)
+        {
+            await using var context = await _factory.CreateDbContextAsync(cancellationToken);
+            var entity = await context.ReactionRoles
+                .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+
+            if (entity is null)
             {
-                _factory = factory;
-                _mapper = mapper;
+                throw new HttpRequestException("Entity not found", null, HttpStatusCode.NotFound);
             }
 
-            public async Task<ReactionRoleDto?> Handle(Command request, CancellationToken cancellationToken)
-            {
-                await using var context = _factory.CreateDbContext();
-                var entity = await context.ReactionRoles
-                    .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+            context.ReactionRoles.Remove(entity);
+            await context.SaveChangesAsync(cancellationToken);
 
-                if (entity is null)
-                {
-                    throw new HttpRequestException("Entity not found", null, HttpStatusCode.NotFound);
-                }
-
-                context.ReactionRoles.Remove(entity);
-                await context.SaveChangesAsync(cancellationToken);
-
-                var dto = _mapper.Map<ReactionRoleDto>(entity);
-                return dto;
-            }
+            var dto = _mapper.Map<ReactionRoleDto>(entity);
+            return dto;
         }
     }
 }

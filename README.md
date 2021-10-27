@@ -2,7 +2,7 @@
 
 Client repo: [Link to Discord bot client](https://github.com/blai30/AsukaNet)
 
-ASP.NET Web API backend for AsukaNet Discord bot written in C# and .NET 6.
+ASP.NET Web API backend for AsukaNet Discord bot written in C# and .NET.
 
 
 ## Tech Stack
@@ -12,7 +12,7 @@ ASP.NET Web API backend for AsukaNet Discord bot written in C# and .NET 6.
 
 ## Features
 
-- C# 9 + .NET 6
+- C# 10 + .NET 6
 - Dependency Injection
 - Authorization (not implemented)
 - Docker
