@@ -7,8 +7,8 @@ ProjectSection(SolutionItems) = preProject
 	.env = .env
 	.gitignore = .gitignore
 	docker-compose.yml = docker-compose.yml
-	flyway.conf = flyway.conf
 	README.md = README.md
+	.env.example = .env.example
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3CBD90B6-225B-4B01-8167-33FB6FBBFB80}"
@@ -26,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.IntegrationTests", "tests\Application.IntegrationTests\Application.IntegrationTests.csproj", "{382CF6B2-AEAB-4694-9A78-3511B06527E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "tests\Application.UnitTests\Application.UnitTests.csproj", "{ACBFDD60-3004-42A4-A69C-C7FD555E39B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations", "src\Migrations\Migrations.csproj", "{97C46557-8AA7-42B9-9FF5-FA12382B5A47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{ACBFDD60-3004-42A4-A69C-C7FD555E39B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACBFDD60-3004-42A4-A69C-C7FD555E39B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACBFDD60-3004-42A4-A69C-C7FD555E39B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97C46557-8AA7-42B9-9FF5-FA12382B5A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97C46557-8AA7-42B9-9FF5-FA12382B5A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97C46557-8AA7-42B9-9FF5-FA12382B5A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97C46557-8AA7-42B9-9FF5-FA12382B5A47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AAC0D16F-45EA-48A3-A3C5-78784BBEDA90} = {3CBD90B6-225B-4B01-8167-33FB6FBBFB80}
@@ -65,5 +71,6 @@ Global
 		{8C156DE5-7A55-4104-BD1B-3794EC7C1156} = {3CBD90B6-225B-4B01-8167-33FB6FBBFB80}
 		{382CF6B2-AEAB-4694-9A78-3511B06527E9} = {AAEB5671-F632-4D55-AFF2-9986F2C7D084}
 		{ACBFDD60-3004-42A4-A69C-C7FD555E39B1} = {AAEB5671-F632-4D55-AFF2-9986F2C7D084}
+		{97C46557-8AA7-42B9-9FF5-FA12382B5A47} = {3CBD90B6-225B-4B01-8167-33FB6FBBFB80}
 	EndGlobalSection
 EndGlobal

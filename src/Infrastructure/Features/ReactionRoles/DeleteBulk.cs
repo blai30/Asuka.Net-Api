@@ -7,71 +7,70 @@ using AsukaApi.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace AsukaApi.Infrastructure.Features.ReactionRoles
+namespace AsukaApi.Infrastructure.Features.ReactionRoles;
+
+public static class DeleteBulk
 {
-    public static class DeleteBulk
+    public sealed record Command(ulong? MessageId, ulong? RoleId, string? Reaction) : IRequest;
+
+    public sealed class CommandHandler : IRequestHandler<Command>
     {
-        public sealed record Command(ulong? MessageId, ulong? RoleId, string? Reaction) : IRequest;
+        private readonly IDbContextFactory<ApplicationDbContext> _factory;
 
-        public sealed class CommandHandler : IRequestHandler<Command>
+        public CommandHandler(IDbContextFactory<ApplicationDbContext> factory)
         {
-            private readonly IDbContextFactory<ApplicationDbContext> _factory;
+            _factory = factory;
+        }
 
-            public CommandHandler(IDbContextFactory<ApplicationDbContext> factory)
+        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        {
+            List<ReactionRole>? entities = null;
+            await using var context = await _factory.CreateDbContextAsync(cancellationToken);
+
+            if (request.MessageId.HasValue && request.RoleId.HasValue)
             {
-                _factory = factory;
+                entities = await context.ReactionRoles
+                    .AsNoTracking()
+                    .Where(entity =>
+                        entity.MessageId == request.MessageId &&
+                        entity.RoleId == request.RoleId)
+                    .ToListAsync(cancellationToken);
+            }
+            else if (request.MessageId.HasValue && !string.IsNullOrWhiteSpace(request.Reaction))
+            {
+                entities = await context.ReactionRoles
+                    .AsNoTracking()
+                    .Where(entity =>
+                        entity.MessageId == request.MessageId &&
+                        entity.Reaction == request.Reaction)
+                    .ToListAsync(cancellationToken);
+            }
+            else if (request.MessageId.HasValue)
+            {
+                entities = await context.ReactionRoles
+                    .AsNoTracking()
+                    .Where(entity =>
+                        entity.MessageId == request.MessageId)
+                    .ToListAsync(cancellationToken);
+            }
+            else if (request.RoleId.HasValue)
+            {
+                entities = await context.ReactionRoles
+                    .AsNoTracking()
+                    .Where(entity =>
+                        entity.RoleId == request.RoleId)
+                    .ToListAsync(cancellationToken);
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            if (entities is null || entities.Count <= 0)
             {
-                List<ReactionRole>? entities = null;
-                await using var context = _factory.CreateDbContext();
-
-                if (request.MessageId.HasValue && request.RoleId.HasValue)
-                {
-                    entities = await context.ReactionRoles
-                        .AsNoTracking()
-                        .Where(entity =>
-                            entity.MessageId == request.MessageId &&
-                            entity.RoleId == request.RoleId)
-                        .ToListAsync(cancellationToken);
-                }
-                else if (request.MessageId.HasValue && !string.IsNullOrWhiteSpace(request.Reaction))
-                {
-                    entities = await context.ReactionRoles
-                        .AsNoTracking()
-                        .Where(entity =>
-                            entity.MessageId == request.MessageId &&
-                            entity.Reaction == request.Reaction)
-                        .ToListAsync(cancellationToken);
-                }
-                else if (request.MessageId.HasValue)
-                {
-                    entities = await context.ReactionRoles
-                        .AsNoTracking()
-                        .Where(entity =>
-                            entity.MessageId == request.MessageId)
-                        .ToListAsync(cancellationToken);
-                }
-                else if (request.RoleId.HasValue)
-                {
-                    entities = await context.ReactionRoles
-                        .AsNoTracking()
-                        .Where(entity =>
-                            entity.RoleId == request.RoleId)
-                        .ToListAsync(cancellationToken);
-                }
-
-                if (entities is null || entities.Count <= 0)
-                {
-                    return Unit.Value;
-                }
-
-                context.ReactionRoles.RemoveRange(entities);
-                await context.SaveChangesAsync(cancellationToken);
-
                 return Unit.Value;
             }
+
+            context.ReactionRoles.RemoveRange(entities);
+            await context.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
         }
     }
 }

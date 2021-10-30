@@ -1,24 +1,23 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AsukaApi.Infrastructure.Features.Tags
+namespace AsukaApi.Infrastructure.Features.Tags;
+
+public record TagDto
 {
-    public record TagDto
-    {
-        public int Id { get; init; }
+    public int Id { get; init; }
 
-        public string Name { get; init; } = default!;
+    public string Name { get; init; } = default!;
 
-        public string Content { get; init; } = default!;
+    public string Content { get; init; } = default!;
 
-        public string? Reaction { get; init; }
+    public string? Reaction { get; init; }
 
-        [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
-        public ulong GuildId { get; init; }
+    [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
+    public ulong GuildId { get; init; }
 
-        [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
-        public ulong UserId { get; init; }
+    [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
+    public ulong UserId { get; init; }
 
-        [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
-        public int UsageCount { get; init; }
-    }
+    [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
+    public int UsageCount { get; init; }
 }

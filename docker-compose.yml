@@ -2,7 +2,7 @@ version: '3.8'
 
 volumes:
   asukaapi:
-  mysql-db-data:
+  asukaapi-mysql:
 
 services:
   asukaapi:
@@ -31,26 +31,10 @@ services:
     restart: always
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
-      - mysql-db-data:/var/lib/mysql
+      - asukaapi-mysql:/var/lib/mysql
     env_file:
       - .env
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
       - 3306:3306
-
-  flyway:
-    container_name: flyway
-    image: flyway/flyway
-    command: -url=jdbc:mysql://db -connectRetries=60 migrate
-    volumes:
-      - ./migrations:/flyway/sql
-    env_file:
-      - .env
-    environment:
-      FLYWAY_EDITION: ${FLYWAY_EDITION}
-      FLYWAY_USER: ${DB_USERNAME}
-      FLYWAY_PASSWORD: ${DB_PASSWORD}
-      FLYWAY_SCHEMAS: ${DB_SCHEMA}
-    depends_on:
-      - db

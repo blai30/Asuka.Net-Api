@@ -7,40 +7,39 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace AsukaApi.Infrastructure.Features.Tags
+namespace AsukaApi.Infrastructure.Features.Tags;
+
+public static class Delete
 {
-    public static class Delete
+    public sealed record Command(int Id) : IRequest<TagDto?>;
+
+    public sealed class CommandHandler : IRequestHandler<Command, TagDto?>
     {
-        public sealed record Command(int Id) : IRequest<TagDto?>;
+        private readonly IDbContextFactory<ApplicationDbContext> _factory;
+        private readonly IMapper _mapper;
 
-        public sealed class CommandHandler : IRequestHandler<Command, TagDto?>
+        public CommandHandler(IDbContextFactory<ApplicationDbContext> factory, IMapper mapper)
         {
-            private readonly IDbContextFactory<ApplicationDbContext> _factory;
-            private readonly IMapper _mapper;
+            _factory = factory;
+            _mapper = mapper;
+        }
 
-            public CommandHandler(IDbContextFactory<ApplicationDbContext> factory, IMapper mapper)
+        public async Task<TagDto?> Handle(Command request, CancellationToken cancellationToken)
+        {
+            await using var context = await _factory.CreateDbContextAsync(cancellationToken);
+            var entity = await context.Tags
+                .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+
+            if (entity is null)
             {
-                _factory = factory;
-                _mapper = mapper;
+                throw new HttpRequestException("Entity not found", null, HttpStatusCode.NotFound);
             }
 
-            public async Task<TagDto?> Handle(Command request, CancellationToken cancellationToken)
-            {
-                await using var context = _factory.CreateDbContext();
-                var entity = await context.Tags
-                    .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+            context.Tags.Remove(entity);
+            await context.SaveChangesAsync(cancellationToken);
 
-                if (entity is null)
-                {
-                    throw new HttpRequestException("Entity not found", null, HttpStatusCode.NotFound);
-                }
-
-                context.Tags.Remove(entity);
-                await context.SaveChangesAsync(cancellationToken);
-
-                var dto = _mapper.Map<TagDto>(entity);
-                return dto;
-            }
+            var dto = _mapper.Map<TagDto>(entity);
+            return dto;
         }
     }
 }

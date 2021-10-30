@@ -2,19 +2,18 @@
 using AutoMapper;
 using NUnit.Framework;
 
-namespace AsukaApi.Application.IntegrationTests
+namespace AsukaApi.Application.IntegrationTests;
+
+public class MappingConfigurationTests
 {
-    public class MappingConfigurationTests
+    [Test]
+    public void MappingProfile_VerifyMappings()
     {
-        [Test]
-        public void MappingProfile_VerifyMappings()
-        {
-            var mappingProfile = new MappingProfile();
+        var mappingProfile = new MappingProfile();
 
-            var config = new MapperConfiguration(mappingProfile);
-            var mapper = new Mapper(config) as IMapper;
+        var config = new MapperConfiguration(mappingProfile);
+        var mapper = new Mapper(config) as IMapper;
 
-            mapper.ConfigurationProvider.AssertConfigurationIsValid();
-        }
+        mapper.ConfigurationProvider.AssertConfigurationIsValid();
     }
 }
