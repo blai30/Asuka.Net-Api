@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using DbUp;
+using Polly;
 
 namespace Migrations;
 
@@ -13,14 +14,18 @@ public static class DatabaseMigrations
             .LogToConsole()
             .Build();
 
-        var result = upgrader.PerformUpgrade();
+        var retryPolicy = Policy
+            .Handle<Exception>()
+            .WaitAndRetryForever(_ => TimeSpan.FromSeconds(5));
 
-        if (!result.Successful)
+        retryPolicy.Execute(() =>
         {
-            Console.WriteLine("Migrations failed");
-            Console.WriteLine(result.Error);
-        }
+            var result = upgrader.PerformUpgrade();
 
-        Console.WriteLine("Migrations successful");
+            if (!result.Successful)
+            {
+                throw new Exception();
+            }
+        });
     }
 }

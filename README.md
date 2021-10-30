@@ -9,11 +9,14 @@ ASP.NET Web API backend for AsukaNet Discord bot written in C# and .NET.
 
 **Server:** ASP.NET Core, MySQL, Entity Framework Core, MediatR
 
+Note: The database schema must exist before database migrations can execute.
+
 
 ## Features
 
 - C# 10 + .NET 6
 - Dependency Injection
+- Database Migrations
 - Authorization (not implemented)
 - Docker
 - Cross platform
