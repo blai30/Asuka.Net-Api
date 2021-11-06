@@ -15,6 +15,8 @@ public static class DependencyInjection
 
         services.AddDbContextFactory<ApplicationDbContext>(builder =>
         {
+            // Default to AsNoTracking(), use AsTracking() otherwise.
+            builder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             builder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             // Map PascalCase POCO properties to snake_case tables and columns.
             builder.UseSnakeCaseNamingConvention();

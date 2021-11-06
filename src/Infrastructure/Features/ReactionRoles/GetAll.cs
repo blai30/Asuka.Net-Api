@@ -55,7 +55,6 @@ public static class GetAll
             }
 
             var dto = await entities
-                .AsNoTracking()
                 .ToListAsync(cancellationToken);
 
             return dto;

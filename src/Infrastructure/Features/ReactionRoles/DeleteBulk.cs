@@ -30,7 +30,6 @@ public static class DeleteBulk
             if (request.MessageId.HasValue && request.RoleId.HasValue)
             {
                 entities = await context.ReactionRoles
-                    .AsNoTracking()
                     .Where(entity =>
                         entity.MessageId == request.MessageId &&
                         entity.RoleId == request.RoleId)
@@ -39,7 +38,6 @@ public static class DeleteBulk
             else if (request.MessageId.HasValue && !string.IsNullOrWhiteSpace(request.Reaction))
             {
                 entities = await context.ReactionRoles
-                    .AsNoTracking()
                     .Where(entity =>
                         entity.MessageId == request.MessageId &&
                         entity.Reaction == request.Reaction)
@@ -48,7 +46,6 @@ public static class DeleteBulk
             else if (request.MessageId.HasValue)
             {
                 entities = await context.ReactionRoles
-                    .AsNoTracking()
                     .Where(entity =>
                         entity.MessageId == request.MessageId)
                     .ToListAsync(cancellationToken);
@@ -56,7 +53,6 @@ public static class DeleteBulk
             else if (request.RoleId.HasValue)
             {
                 entities = await context.ReactionRoles
-                    .AsNoTracking()
                     .Where(entity =>
                         entity.RoleId == request.RoleId)
                     .ToListAsync(cancellationToken);

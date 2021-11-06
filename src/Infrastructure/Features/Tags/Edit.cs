@@ -27,8 +27,8 @@ public static class Edit
         public async Task<TagDto?> Handle(Command request, CancellationToken cancellationToken)
         {
             await using var context = await _factory.CreateDbContextAsync(cancellationToken);
+            // Omit AsTracking() as it will try to update every field instead of only modified fields.
             var entity = await context.Tags
-                .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
             if (entity is null)
@@ -39,6 +39,7 @@ public static class Edit
             entity.Content = request.Content;
             entity.Reaction = request.Reaction;
 
+            // Only update modified fields rather than the whole entity.
             context.Tags.Attach(entity);
             context.Entry(entity).Property(t => t.Content).IsModified = true;
             context.Entry(entity).Property(t => t.Reaction).IsModified = true;

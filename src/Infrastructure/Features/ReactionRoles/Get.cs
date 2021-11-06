@@ -26,7 +26,6 @@ public static class Get
         {
             await using var context = await _factory.CreateDbContextAsync(cancellationToken);
             var entity = await context.ReactionRoles
-                .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
             var dto = _mapper.Map<ReactionRoleDto>(entity);
