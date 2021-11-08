@@ -17,9 +17,7 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Ensure correct collation.
-        modelBuilder.UseCollation("utf8mb4_unicode_ci");
-
+        modelBuilder.HasDefaultSchema("asuka_net");
         // Load entity type configuration mappers.
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
