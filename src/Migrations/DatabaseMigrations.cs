@@ -9,7 +9,7 @@ public static class DatabaseMigrations
     public static void ExecuteScripts(string connectionString)
     {
         var upgrader = DeployChanges.To
-            .MySqlDatabase(connectionString)
+            .PostgresqlDatabase(connectionString, "asuka_net")
             .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
             .LogToConsole()
             .Build();

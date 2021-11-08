@@ -2,7 +2,7 @@ version: '3.8'
 
 volumes:
   asukaapi:
-  asukaapi-mysql:
+  asukaapi-db:
 
 services:
   asukaapi:
@@ -27,14 +27,13 @@ services:
 
   db:
     container_name: db
-    image: mysql
+    image: postgres
     restart: always
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
-      - asukaapi-mysql:/var/lib/mysql
+      - asukaapi-db:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - 3306:3306
+      - 5432:5432
