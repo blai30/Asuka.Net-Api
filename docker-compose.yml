@@ -19,7 +19,7 @@ services:
       - 5101:5101
     build:
       context: .
-      dockerfile: src/WebApi/Dockerfile
+      dockerfile: Dockerfile
     # Application might continue crashing until
     # dependent service(s) fully initialize.
     depends_on:
