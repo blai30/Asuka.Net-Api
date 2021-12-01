@@ -11,12 +11,12 @@ public class TagFeatureTests
     }
 
     [Test]
-    public async Task GetAll_ReturnsAll_WhenAnyExists()
+    public void GetAll_ReturnsAll_WhenAnyExists()
     {
     }
 
     [Test]
-    public async Task Get_ReturnsById_WhenQueryIncludesId()
+    public void Get_ReturnsById_WhenQueryIncludesId()
     {
     }
 }

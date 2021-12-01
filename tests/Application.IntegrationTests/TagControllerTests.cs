@@ -11,7 +11,7 @@ public class TagControllerTests
     }
 
     [Test]
-    public async Task Test1()
+    public void Test1()
     {
     }
 }
